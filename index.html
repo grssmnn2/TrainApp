@@ -20,9 +20,10 @@
 
 <body>
     <h1>Train Times</h1>
-    <h3>Current Train Schedule</h3>
+    <br>
     <!-- table holding train information -->
-    <table>
+    <table id = "trainSchedule">
+            <h3>Current Train Schedule</h3> 
         <tr>
             <th>Train Name</th>
             <th>Destination</th>
@@ -66,7 +67,8 @@
             <td></td>
         </tr>
     </table>
-
+    <br>
+    <br>
     <!-- form to enter new train info from user -->
     <form action="/action_page.php">
         Train Name:
@@ -82,7 +84,7 @@
         <br>
         <input type="text" id="frequency">
         <br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" id = "submit">
     </form>
 
     <!-- jQuery link -->

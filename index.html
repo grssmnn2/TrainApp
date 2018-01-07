@@ -19,7 +19,71 @@
 </head>
 
 <body>
+    <h1>Train Times</h1>
+    <h3>Current Train Schedule</h3>
+    <!-- table holding train information -->
+    <table>
+        <tr>
+            <th>Train Name</th>
+            <th>Destination</th>
+            <th>Frequency</th>
+            <th>Next Arrival</th>
+            <th>Minutes Away</th>
+        </tr>
+        <tr>
+            <td>Choo Choo</td>
+            <td>Mexico</td>
+            <td>55 minutes</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Grossmann Gateway</td>
+            <td>Germany</td>
+            <td>60 minutes</td>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td>Zoom Rails</td>
+            <td>New Zealand</td>
+            <td>70 minutes</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Trailblazer</td>
+            <td>Texas</td>
+            <td>15 minutes</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Speed Demon</td>
+            <td>Canada</td>
+            <td>120 minutes</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
 
+    <!-- form to enter new train info from user -->
+    <form action="/action_page.php">
+        Train Name:
+        <br>
+        <input type="text" id="trainName">
+        <br> Destination:
+        <br>
+        <input type="text" id="destination">
+        <br> First Train Time (HH:mm - military time):
+        <br>
+        <input type="text" id="firstTrain">
+        <br> Frequency (min):
+        <br>
+        <input type="text" id="frequency">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
 
     <!-- jQuery link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

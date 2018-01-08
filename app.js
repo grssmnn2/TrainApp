@@ -10,16 +10,15 @@ var config = {
 firebase.initializeApp(config);
 
 var database = firebase.database();
-// var arrive;
-// var minutesAway;
+
 
 // document.onload(function(){
-//     arrive = moment().endOf('day').fromNow();
-//     minutesAway = moment().add(frequency, 'minutes').calendar();
+    var arrive = moment().add(7, 'minutes').calendar();
+    var minutesAway = moment().add(frequency, 'minutes').calendar();
 // })
 
-// $("#chooArrive").append(arrive);
-// $("#chooAway").append(minutesAway);
+$("#chooArrive").append(arrive);
+$("#chooAway").append(minutesAway);
 
 
 

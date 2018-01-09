@@ -16,16 +16,15 @@ var database = firebase.database();
 var name = $("#trainName").val();
 var destination = $("#destination").val();
 var firstTrain = $("#firstTrain").val();
-var frequency = $("#frequency").val()
+var frequency = $("#frequency").val();
 var trainfrequency;
 var minutesAway;
-// var currentTime = moment();
-// console.log(currentTime);   
+var currentTime = moment().format('h:mm');
+console.log(currentTime);   
 // the current time + frequency in minutes is the arrival time
-// var trainArrive = moment().add($("#frequency").val(), 'minutes').calendar();
-// console.log(trainArrive);
-// the train is the frequency value in minutes away from the station
-// var minutesAway = "";   
+var trainArrive = moment().add(300, 'minutes').format('hh:mm A');
+console.log(trainArrive);
+  
 
 //  when the submit button is clicked
 $("#submit").on("click", function () {
@@ -46,7 +45,7 @@ $("#submit").on("click", function () {
     trainFrequency = setInterval(arrival, 1000);
     // if minutes away = 0 after 60 seconds, start over
     function arrival() {
-        if (minutesAway === 0) {
+        if (minutesAway == 0) {
             clearInterval(trainFrequency);
             minutesAway = $("#frequency").val();
             // otherwise keep subtracting 1 minute
@@ -58,11 +57,11 @@ $("#submit").on("click", function () {
     // add new table data to bottom of table
     var tableRow = $("<tr>");
 
-    // append the train name input, destination, first train, frequency
+    // append the train name input, destination, first train, frequency and minutes to train
     tableRow.append("<td>" + $("#trainName").val() + "</td>");
     tableRow.append("<td>" + $("#destination").val() + "</td>");
     tableRow.append("<td>" + $("#frequency").val() + "</td>");
-    tableRow.append("<td>" + $("#firstTrain").val() + "</td>");
+    tableRow.append("<td>" + trainArrive + "</td>");
     tableRow.append("<td>" + minutesAway + "</td>");
 
 

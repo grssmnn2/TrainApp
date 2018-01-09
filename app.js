@@ -11,16 +11,10 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-
-// document.onload(function(){
-    var arrive = moment().add(7, 'minutes').calendar();
-    var minutesAway = moment().add(frequency, 'minutes').calendar();
-// })
-
-$("#chooArrive").append(arrive);
-$("#chooAway").append(minutesAway);
-
-
+var name = $("#trainName").val();
+var destination = $("#destination").val();
+var firstTrain =  $("#firstTrain").val();
+var frequency = $("#frequency").val()
 
 //  when the submit button is clicked
 $("#submit").on("click", function () {
@@ -28,21 +22,24 @@ $("#submit").on("click", function () {
     event.preventDefault();
     // send data to firebase
     database.ref().set({
-        name: $("#trainName").val(),
-        destination: $("#destination").val(),
-        firstTrain: $("#firstTrain").val(),
-        frequency: $("#frequency").val(),
+        name: name,
+        destination: destination,
+        firstTrain: firstTrain,
+        frequency: frequency,
         dateAdded: firebase.database.ServerValue.TIMESTAMP
     })
 
     // add new table data to bottom of table
     var tableRow = $("<tr>");
-    
+  
     // append the train name input, destination, first train, frequency
     tableRow.append("<td>" + $("#trainName").val() + "</td>");
     tableRow.append("<td>" + $("#destination").val() + "</td>");
     tableRow.append("<td>" + $("#firstTrain").val() + "</td>");
     tableRow.append("<td>" + $("#frequency").val() + "</td>");
+    
+  
+    
     // append table data to the train schedule
     $("#trainSchedule").append(tableRow);
 

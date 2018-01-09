@@ -1,3 +1,5 @@
+$(document).ready(function () {
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyCu-hVPCfk5n5ZAZ1JczJ-CLuw-AOLrYoU",
@@ -13,8 +15,17 @@ var database = firebase.database();
 
 var name = $("#trainName").val();
 var destination = $("#destination").val();
-var firstTrain =  $("#firstTrain").val();
+var firstTrain = $("#firstTrain").val();
 var frequency = $("#frequency").val()
+var trainfrequency;
+var minutesAway;
+// var currentTime = moment();
+// console.log(currentTime);   
+// the current time + frequency in minutes is the arrival time
+// var trainArrive = moment().add($("#frequency").val(), 'minutes').calendar();
+// console.log(trainArrive);
+// the train is the frequency value in minutes away from the station
+// var minutesAway = "";   
 
 //  when the submit button is clicked
 $("#submit").on("click", function () {
@@ -29,17 +40,32 @@ $("#submit").on("click", function () {
         dateAdded: firebase.database.ServerValue.TIMESTAMP
     })
 
+    // minutesAway=the initial train frequency as a number
+    minutesAway = Number($("#frequency").val());
+    // train frequency runs once every minute (in seconds now to check if working)
+    trainFrequency = setInterval(arrival, 1000);
+    // if minutes away = 0 after 60 seconds, start over
+    function arrival() {
+        if (minutesAway === 0) {
+            clearInterval(trainFrequency);
+            minutesAway = $("#frequency").val();
+            // otherwise keep subtracting 1 minute
+        } else {
+            minutesAway--;
+        }
+    }
+
     // add new table data to bottom of table
     var tableRow = $("<tr>");
-  
+
     // append the train name input, destination, first train, frequency
     tableRow.append("<td>" + $("#trainName").val() + "</td>");
     tableRow.append("<td>" + $("#destination").val() + "</td>");
-    tableRow.append("<td>" + $("#firstTrain").val() + "</td>");
     tableRow.append("<td>" + $("#frequency").val() + "</td>");
-    
-  
-    
+    tableRow.append("<td>" + $("#firstTrain").val() + "</td>");
+    tableRow.append("<td>" + minutesAway + "</td>");
+
+
     // append table data to the train schedule
     $("#trainSchedule").append(tableRow);
 
@@ -48,16 +74,16 @@ $("#submit").on("click", function () {
     $("#destination").val("");
     $("#firstTrain").val("");
     $("#frequency").val("");
-    
+
 })
 
 // pull data updates from Firebase and append them to the table
-database.ref().on("value", function(snapshot){
+database.ref().on("value", function (snapshot) {
     $(tableRow).append(snapshot.val().name);
     $(tableRow).append(snapshot.val().destination);
     $(tableRow).append(snapshot.val().firstTrain);
     $(tableRow).append(snapshot.val().frequency);
-       
+
 });
 
-$("#trainSchedule").append(tableData);
+});

@@ -37,7 +37,7 @@ $(document).ready(function () {
         // the current time + frequency in minutes is the arrival time
         var trainArrive = moment().add(frequency, 'minutes').format('hh:mm A');
         console.log(trainArrive);
-        
+
         // send data to firebase using object
         var data = {  
         name: name,
@@ -46,6 +46,7 @@ $(document).ready(function () {
         frequency: frequency,
         trainArrive: trainArrive
         }
+        
         database.ref().push(data);
 
         // variable to hold info to make new table row

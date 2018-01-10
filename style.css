@@ -1,12 +1,22 @@
+body{
+    background-repeat: no-repeat;
+    background-size: cover;
+    background: center center absolute; 
+    background-attachment: fixed;
+    overflow: auto; 
+}
+
 body, h1, h3, table{
     text-align: center;
     margin: 0 auto;
+    color: white;
 }
 
 th, td {
     border-bottom: 1px solid black;
     text-align: center;
     font-family: 'Inconsolata', monospace;
+    font-size: 35px;
 }
 
 th{
@@ -14,16 +24,25 @@ th{
 }
 
 table{
-    border: 1px solid rgb(56, 56, 121);
+    border: 1px solid rgb(69, 69, 112);
+    opacity: 0.7;
+    background-color: rgb(69, 69, 112);
+    opacity: 0.7;
 }
 
 h3, h1{
     width: 35%;
-    background: rgb(56, 56, 121);
-    color: white;
+    background: rgb(69, 69, 112);
+    opacity: 0.7;
     font-family: 'Inconsolata', monospace;
 }
 
 form{
     font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    font-style: bold;
+}
+
+#submit, #trainName, #destination, #frequency, #firstTrain{
+    color: black;
 }

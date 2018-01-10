@@ -1,6 +1,12 @@
+body, h1, h3, table{
+    text-align: center;
+    margin: 0 auto;
+}
+
 th, td {
     border-bottom: 1px solid black;
     text-align: center;
+    font-family: 'Inconsolata', monospace;
 }
 
 th{
@@ -11,8 +17,13 @@ table{
     border: 1px solid rgb(56, 56, 121);
 }
 
-h3{
+h3, h1{
     width: 35%;
     background: rgb(56, 56, 121);
     color: white;
+    font-family: 'Inconsolata', monospace;
+}
+
+form{
+    font-family: 'Inconsolata', monospace;
 }

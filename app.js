@@ -46,14 +46,15 @@ $(document).ready(function () {
 
         // timer attempt updated every second to see immediate result
         var trainFrequency = setInterval(arrival, 1000);
+        // convert current time and train arrival into numbers
         timeToNumber = (parseInt(currentTime)-parseInt(trainArrive));
         // minutesAway=current time - trainarrive time, hours *60 + remaining minutes         
-        minutesAway = (timeToNumber*60 + timeToNumber%60);
+        minutesAway = Math.abs((timeToNumber*60 + timeToNumber%60));
 
         function arrival() {
             if (minutesAway === 0) {
                 clearInterval(trainFrequency);
-                minutesAway = (timeToNumber*60 + timeToNumber%60);
+                minutesAway = Math.abs((timeToNumber*60 + timeToNumber%60));
             
             } else {
                 minutesAway--;

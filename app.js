@@ -12,12 +12,12 @@ $(document).ready(function () {
     firebase.initializeApp(config);
 
     var database = firebase.database();
+
     // global variables to use later
     var tableRow;
     var trainfrequency;
     var minutesAway;
-    var timerTrain;
-
+    var timeToNumber;
 
     // check current time using moment.js
     var currentTime = moment().format('hh:mm A');
@@ -27,7 +27,7 @@ $(document).ready(function () {
     $("#submit").on("click", function () {
         // prevent submit button from opening new page
         event.preventDefault();
-        // send data to firebase
+       
         // grab user input and place in variables for ease of access
         var name = $("#trainName").val();
         var destination = $("#destination").val();
@@ -35,22 +35,31 @@ $(document).ready(function () {
         // made frequency input into a number in case it was being read as a string
         var frequency = parseInt($("#frequency").val());
 
-        // the current time + frequency in minutes is the arrival time
-        var trainArrive = moment().add(frequency, 'minutes').format('hh:mm A');
+        console.log(name);
+        console.log(destination);
+        console.log(firstTrain);
+        console.log(frequency);
+
+        // the firstTrain time + frequency is the next trainArrive time
+        var trainArrive = moment(firstTrain, 'HH:mm').add(frequency, 'minutes').format('hh:mm A');
         console.log(trainArrive);
 
-        // timer attempt in seconds to see immediate result
+        // timer attempt updated every second to see immediate result
         var trainFrequency = setInterval(arrival, 1000);
-       
+        timeToNumber = (parseInt(currentTime)-parseInt(trainArrive));
+        // minutesAway=current time - trainarrive time, hours *60 + remaining minutes         
+        minutesAway = (timeToNumber*60 + timeToNumber%60);
+
         function arrival() {
             if (minutesAway === 0) {
                 clearInterval(trainFrequency);
-                minutesAway = $("#frequency").val();
+                minutesAway = (timeToNumber*60 + timeToNumber%60);
+            
             } else {
                 minutesAway--;
                 $('td[id="updatedMinute"]').html(minutesAway);
                 // $("#updatedMinute").html(minutesAway);
-                           
+
             }
         }
 
@@ -68,15 +77,12 @@ $(document).ready(function () {
         // variable to hold info to make new table row
         tableRow = $("<tr>");
 
-        // minutesAway=the initial train frequency as a number
-        minutesAway = parseInt($("#frequency").val());
-
         // append the train name input, destination, first train, frequency and minutesAway to same row
         tableRow.append("<td>" + $("#trainName").val() + "</td>");
         tableRow.append("<td>" + $("#destination").val() + "</td>");
         tableRow.append("<td>" + $("#frequency").val() + "</td>");
         tableRow.append("<td>" + trainArrive + "</td>");
-        tableRow.append($('td[id="updatedMinute"]'));      
+        tableRow.append($('td[id="updatedMinute"]'));
 
 
         // append row to the train schedule
@@ -91,7 +97,7 @@ $(document).ready(function () {
     })
 
     // pull data updates from Firebase and append them to the table
-    database.ref().on("child-added", function (childSnapshot) {
+    database.ref().on("child_added", function (childSnapshot) {
         $(tableRow).append(childSnapshot.val().name);
         $(tableRow).append(childSnapshot.val().destination);
         $(tableRow).append(childSnapshot.val().firstTrain);

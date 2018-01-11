@@ -16,6 +16,7 @@ $(document).ready(function () {
     var tableRow;
     var trainfrequency;
     var minutesAway;
+    var timerTrain;
 
 
     // check current time using moment.js
@@ -38,19 +39,35 @@ $(document).ready(function () {
         var trainArrive = moment().add(frequency, 'minutes').format('hh:mm A');
         console.log(trainArrive);
 
-        // send data to firebase using object
-        var data = {  
-        name: name,
-        destination: destination,
-        firstTrain: firstTrain,
-        frequency: frequency,
-        trainArrive: trainArrive
+        // timer attempt in seconds to see immediate result
+        var trainFrequency = setInterval(arrival, 1000);
+       
+        function arrival() {
+            if (minutesAway === 0) {
+                clearInterval(trainFrequency);
+                minutesAway = $("#frequency").val();
+            } else {
+                minutesAway--;
+                $('td[id="updatedMinute"]').html(minutesAway);
+                // $("#updatedMinute").html(minutesAway);
+                           
+            }
         }
-        
+
+        // send data to firebase using object
+        var data = {
+            name: name,
+            destination: destination,
+            firstTrain: firstTrain,
+            frequency: frequency,
+            trainArrive: trainArrive
+        }
+
         database.ref().push(data);
 
         // variable to hold info to make new table row
         tableRow = $("<tr>");
+
         // minutesAway=the initial train frequency as a number
         minutesAway = parseInt($("#frequency").val());
 
@@ -59,7 +76,7 @@ $(document).ready(function () {
         tableRow.append("<td>" + $("#destination").val() + "</td>");
         tableRow.append("<td>" + $("#frequency").val() + "</td>");
         tableRow.append("<td>" + trainArrive + "</td>");
-        tableRow.append("<td>" + minutesAway + "</td>");
+        tableRow.append($('td[id="updatedMinute"]'));      
 
 
         // append row to the train schedule
@@ -74,14 +91,16 @@ $(document).ready(function () {
     })
 
     // pull data updates from Firebase and append them to the table
-    database.ref().on("value", function (snapshot) {
-        $(tableRow).append(snapshot.val().name);
-        $(tableRow).append(snapshot.val().destination);
-        $(tableRow).append(snapshot.val().firstTrain);
-        $(tableRow).append(snapshot.val().frequency);
-        $(tableRow).append(snapshot.val().trainArrive);
+    database.ref().on("child-added", function (childSnapshot) {
+        $(tableRow).append(childSnapshot.val().name);
+        $(tableRow).append(childSnapshot.val().destination);
+        $(tableRow).append(childSnapshot.val().firstTrain);
+        $(tableRow).append(childSnapshot.val().frequency);
+        $(tableRow).append(childSnapshot.val().trainArrive);
 
 
     });
 
 });
+
+

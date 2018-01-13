@@ -39,20 +39,16 @@ $(document).ready(function () {
         // the firstTrain time + frequency is the next trainArrive time
         var trainArrive = moment(firstTrain, 'HH:mm').add(frequency, 'minutes').format('hh:mm A');
         console.log(trainArrive);
-     
-        
+          
         // timer attempt updated every second to see immediate result
         var trainFrequency = setInterval(arrival, 1000);
         // the difference between the current time and the train arrival time in minutes is minutes away
-        // timeDifference = currentTime.diff(moment(firstTrain, "HH:mm"), "minutes");
         timeDifference=moment.utc(moment(firstTrain, "HH:mm").diff(moment(currentTime, "HH:mm"))).format("HH:mm");
         var timeToMinutes = moment.duration(timeDifference).asMinutes();
              console.log(timeDifference);
              console.log(timeToMinutes);
         // convert current time and train arrival into numbers
         minutesAway=timeToMinutes;
-     
-           
      
         function arrival() {
             if (minutesAway === 0) {
@@ -61,6 +57,9 @@ $(document).ready(function () {
             
             } else {
                 minutesAway--;
+                // change the html within the specific td with every minute
+                // can't figure out how to add more and more changing tds to table without changing 
+                // original contents
                 $("#updatedMinute").html(minutesAway);
 
             }
@@ -86,6 +85,7 @@ $(document).ready(function () {
         tableRow.append("<td>" + $("#destination").val() + "</td>");
         tableRow.append("<td>" + $("#frequency").val() + "</td>");
         tableRow.append("<td>" + trainArrive + "</td>");
+        // append the td with the changing html inside of it
         tableRow.append($('td[id="updatedMinute"]'));
        
 

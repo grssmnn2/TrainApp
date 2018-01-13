@@ -18,7 +18,7 @@ $(document).ready(function () {
     var trainfrequency;
     var minutesAway;
     var timeDifference;
-   
+
     // check current time using moment.js
     var currentTime = moment();
     console.log(currentTime);
@@ -27,7 +27,7 @@ $(document).ready(function () {
     $("#submit").on("click", function () {
         // prevent submit button from opening new page
         event.preventDefault();
-       
+
         // grab user input and place in variables for ease of access
         var name = $("#trainName").val();
         var destination = $("#destination").val();
@@ -39,28 +39,27 @@ $(document).ready(function () {
         // the firstTrain time + frequency is the next trainArrive time
         var trainArrive = moment(firstTrain, 'HH:mm').add(frequency, 'minutes').format('hh:mm A');
         console.log(trainArrive);
-          
+
         // timer attempt updated every second to see immediate result
         var trainFrequency = setInterval(arrival, 1000);
         // the difference between the current time and the train arrival time in minutes is minutes away
-        timeDifference=moment.utc(moment(firstTrain, "HH:mm").diff(moment(currentTime, "HH:mm"))).format("HH:mm");
+        timeDifference = moment.utc(moment(firstTrain, "HH:mm").diff(moment(currentTime, "HH:mm"))).format("HH:mm");
         var timeToMinutes = moment.duration(timeDifference).asMinutes();
-             console.log(timeDifference);
-             console.log(timeToMinutes);
+        console.log(timeDifference);
+        console.log(timeToMinutes);
         // convert current time and train arrival into numbers
-        minutesAway=timeToMinutes;
-     
+        minutesAway = timeToMinutes;
+
         function arrival() {
-            if (minutesAway === 0) {
+            if (minutesAway == 0) {
                 clearInterval(trainFrequency);
-                minutesAway = timeDifference;
-            
+                minutesAway = timeToMinutes;
+
             } else {
                 minutesAway--;
-                // change the html within the specific td with every minute
-                // can't figure out how to add more and more changing tds to table without changing 
-                // original contents
+                $(this).html(minutesAway);
                 $("#updatedMinute").html(minutesAway);
+
 
             }
         }
@@ -78,19 +77,7 @@ $(document).ready(function () {
         database.ref().push(data);
 
         // variable to hold info to make new table row
-        tableRow = $("<tr>");
 
-        // append the train name input, destination, first train, frequency and minutesAway to same row
-        tableRow.append("<td>" + $("#trainName").val() + "</td>");
-        tableRow.append("<td>" + $("#destination").val() + "</td>");
-        tableRow.append("<td>" + $("#frequency").val() + "</td>");
-        tableRow.append("<td>" + trainArrive + "</td>");
-        // append the td with the changing html inside of it
-        tableRow.append($('td[id="updatedMinute"]'));
-       
-
-        // append row to the train schedule
-        $("#trainSchedule").append(tableRow);
 
         // empty input after submit is clicked
 
@@ -103,13 +90,22 @@ $(document).ready(function () {
 
     // pull data updates from Firebase and append them to the table
     database.ref().on("child_added", function (childSnapshot) {
-        $(tableRow).append(childSnapshot.val().name);
-        $(tableRow).append(childSnapshot.val().destination);
-        $(tableRow).append(childSnapshot.val().firstTrain);
-        $(tableRow).append(childSnapshot.val().frequency);
-        $(tableRow).append(childSnapshot.val().trainArrive);
-        $(tableRow).append(childSnapshot.val().minutesAway);
-      
+        tableRow = $("<tr>");
+        // append the train name input, destination, first train, frequency and minutesAway to same row
+        tableRow.append("<td>" + childSnapshot.val().name + "</td>");
+        tableRow.append("<td>" + childSnapshot.val().destination + "</td>");
+        tableRow.append("<td>" + childSnapshot.val().frequency + "</td>");
+        tableRow.append("<td>" + childSnapshot.val().trainArrive + "</td>");
+        // append the td with the changing html inside of it
+        tableRow.append($('td[id="updatedMinute"]'));
+        //for the last column you should calculate each trains individual 
+        //minutes/seconds away based on the current time of the user 
+        //and then append that value to the last column and set it up 
+        //in a wa that whenever that value changes it updates in the html 
+        // somehow use this??
+
+        // append row to the train schedule
+        $("#trainSchedule").append(tableRow);
 
     });
 

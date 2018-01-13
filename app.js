@@ -17,10 +17,10 @@ $(document).ready(function () {
     var tableRow;
     var trainfrequency;
     var minutesAway;
-    var timeToNumber;
-
+    var timeDifference;
+   
     // check current time using moment.js
-    var currentTime = moment().format('hh:mm A');
+    var currentTime = moment();
     console.log(currentTime);
 
     //  when the submit button is clicked
@@ -32,34 +32,36 @@ $(document).ready(function () {
         var name = $("#trainName").val();
         var destination = $("#destination").val();
         var firstTrain = $("#firstTrain").val();
-        // made frequency input into a number in case it was being read as a string
         var frequency = parseInt($("#frequency").val());
 
-        console.log(name);
-        console.log(destination);
-        console.log(firstTrain);
-        console.log(frequency);
+        console.log(name, destination, firstTrain, frequency);
 
         // the firstTrain time + frequency is the next trainArrive time
         var trainArrive = moment(firstTrain, 'HH:mm').add(frequency, 'minutes').format('hh:mm A');
         console.log(trainArrive);
-
+     
+        
         // timer attempt updated every second to see immediate result
         var trainFrequency = setInterval(arrival, 1000);
+        // the difference between the current time and the train arrival time in minutes is minutes away
+        // timeDifference = currentTime.diff(moment(firstTrain, "HH:mm"), "minutes");
+        timeDifference=moment.utc(moment(firstTrain, "HH:mm").diff(moment(currentTime, "HH:mm"))).format("HH:mm");
+        var timeToMinutes = moment.duration(timeDifference).asMinutes();
+             console.log(timeDifference);
+             console.log(timeToMinutes);
         // convert current time and train arrival into numbers
-        timeToNumber = (parseInt(currentTime)-parseInt(trainArrive));
-        // minutesAway=current time - trainarrive time, hours *60 + remaining minutes         
-        minutesAway = Math.abs((timeToNumber*60 + timeToNumber%60));
-
+        minutesAway=timeToMinutes;
+     
+           
+     
         function arrival() {
             if (minutesAway === 0) {
                 clearInterval(trainFrequency);
-                minutesAway = Math.abs((timeToNumber*60 + timeToNumber%60));
+                minutesAway = timeDifference;
             
             } else {
                 minutesAway--;
-                $('td[id="updatedMinute"]').html(minutesAway);
-                // $("#updatedMinute").html(minutesAway);
+                $("#updatedMinute").html(minutesAway);
 
             }
         }
@@ -70,7 +72,8 @@ $(document).ready(function () {
             destination: destination,
             firstTrain: firstTrain,
             frequency: frequency,
-            trainArrive: trainArrive
+            trainArrive: trainArrive,
+            minutesAway: minutesAway
         }
 
         database.ref().push(data);
@@ -84,12 +87,13 @@ $(document).ready(function () {
         tableRow.append("<td>" + $("#frequency").val() + "</td>");
         tableRow.append("<td>" + trainArrive + "</td>");
         tableRow.append($('td[id="updatedMinute"]'));
-
+       
 
         // append row to the train schedule
         $("#trainSchedule").append(tableRow);
 
         // empty input after submit is clicked
+
         $("#trainName").val("");
         $("#destination").val("");
         $("#firstTrain").val("");
@@ -104,7 +108,8 @@ $(document).ready(function () {
         $(tableRow).append(childSnapshot.val().firstTrain);
         $(tableRow).append(childSnapshot.val().frequency);
         $(tableRow).append(childSnapshot.val().trainArrive);
-
+        $(tableRow).append(childSnapshot.val().minutesAway);
+      
 
     });
 

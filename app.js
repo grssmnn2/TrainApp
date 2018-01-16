@@ -50,14 +50,14 @@ $(document).ready(function () {
         // convert current time and train arrival into numbers
         minutesAway = timeToMinutes;
 
+        // if minutesAway is zero, clear the timer and set minutes back to frequency
         function arrival() {
             if (minutesAway == 0) {
                 clearInterval(trainFrequency);
-                minutesAway = timeToMinutes;
+                minutesAway = frequency;
 
             } else {
                 minutesAway--;
-                $(this).html(minutesAway);
                 $("#updatedMinute").html(minutesAway);
 
 

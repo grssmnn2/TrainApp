@@ -23,11 +23,11 @@ $(document).ready(function () {
     var currentTime = moment();
     console.log(currentTime);
 
-    //  when the submit button is clicked
-    // var array = [];
-    $("#submit").on("click", function () {
+   $("#submit").on("click", function () {
+       
         // prevent submit button from opening new page
         event.preventDefault();
+
         // grab user input and place in variables for ease of access
         var name = $("#trainName").val();
         var destination = $("#destination").val();

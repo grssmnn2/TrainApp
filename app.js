@@ -13,12 +13,6 @@ $(document).ready(function () {
 
     var database = firebase.database();
 
-    // global variables to use later
-    var tableRow;
-    var trainfrequency;
-    var minutesAway;
-    var timeDifference;
-
     // check current time using moment.js
     var currentTime = moment();
     console.log(currentTime);
@@ -41,14 +35,14 @@ $(document).ready(function () {
         console.log(trainArrive);
 
         // the difference between the current time and the train arrival time in minutes is minutes away
-        timeDifference = moment.utc(moment(firstTrain, "HH:mm").diff(moment(currentTime, "HH:mm"))).format("HH:mm");
+        var timeDifference = moment.utc(moment(firstTrain, "HH:mm").diff(moment(currentTime, "HH:mm"))).format("HH:mm");
         var timeToMinutes = moment.duration(timeDifference).asMinutes();
         // check values in console
         console.log(timeDifference);
         console.log(timeToMinutes);
 
         // minutesAway is equal to the difference in time converted to minutes
-        minutesAway = timeToMinutes;
+        var minutesAway = timeToMinutes;
 
         // commented out timer, it is ALMOST working
 
@@ -93,7 +87,7 @@ $(document).ready(function () {
     // pull data updates from Firebase and append them to the table
     database.ref().on("child_added", function (childSnapshot) {
         // variable to hold info to make new table row
-        tableRow = $("<tr>");
+        var tableRow = $("<tr>");
         // append the train name input, destination, first train, frequency and minutesAway to same row
         tableRow.append("<td>" + childSnapshot.val().name + "</td>");
         tableRow.append("<td>" + childSnapshot.val().destination + "</td>");

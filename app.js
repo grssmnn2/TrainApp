@@ -86,7 +86,7 @@ $(document).ready(function () {
 
     // pull data updates from Firebase and append them to the table
     database.ref().on("child_added", function (childSnapshot) {
-        // variable to hold info to make new table row
+  
         var tableRow = $("<tr>");
         // append the train name input, destination, first train, frequency and minutesAway to same row
         tableRow.append("<td>" + childSnapshot.val().name + "</td>");
@@ -97,7 +97,6 @@ $(document).ready(function () {
         // append the td with the changing html inside of it
         // tableRow.append($('td[id="updatedMinute"]'));
         
-        // append row to the train schedule
         $("#trainSchedule").append(tableRow);
 
         //for the last column you should calculate each trains individual 
